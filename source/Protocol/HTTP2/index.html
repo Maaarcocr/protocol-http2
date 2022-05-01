@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		
+			<title>Protocol::HTTP2</title>
+		
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		
+		<link rel="icon" type="image/png" href="../../../_static/icon.png"/>
+		<link rel="stylesheet" href="../../../_static/site.css" type="text/css" media="screen"/>
+		
+		<script src="../../../_components/jquery/jquery.min.js"></script>
+		<script src="../../../_components/jquery-syntax/jquery.syntax.min.js"></script>
+		<script src="../../../_components/mermaid/mermaid.min.js"></script>
+		
+		<script src="../../../_static/links.js"></script>
+		
+		<script type="text/javascript">
+		//<![CDATA[
+			jQuery(function($) {
+				$.syntax();
+			});
+			
+			let isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+			let config = {theme: 'light'};
+			if (isDarkMode) config.theme = 'dark';
+			else config.theme = 'forest';
+			mermaid.initialize(config);
+		//]]>
+		</script>
+	</head>
+
+	<body>
+		<header> › <a class="link" href="../../../index.html">Project</a> › <a class="link" href="../../index.html">Source</a></header>
+		
+		<main>
+			
+	<h1><code class="language-ruby">Protocol::HTTP2</code></h1>
+	
+		
+	
+	
+	<section>
+	<h2>Nested</h2>
+	
+	<ul>
+		<li><a href="Client/index.html"><code class="language-ruby">Protocol::HTTP2::Client</code></a></li>
+		<li><a href="Connection/index.html"><code class="language-ruby">Protocol::HTTP2::Connection</code></a></li>
+		<li><a href="Continued/index.html"><code class="language-ruby">Protocol::HTTP2::Continued</code></a></li>
+		<li><a href="ContinuationFrame/index.html"><code class="language-ruby">Protocol::HTTP2::ContinuationFrame</code></a></li>
+		<li><a href="DataFrame/index.html"><code class="language-ruby">Protocol::HTTP2::DataFrame</code></a></li>
+		<li><a href="Dependency/index.html"><code class="language-ruby">Protocol::HTTP2::Dependency</code></a></li>
+		<li><a href="Error/index.html"><code class="language-ruby">Protocol::HTTP2::Error</code></a></li>
+		<li><a href="HandshakeError/index.html"><code class="language-ruby">Protocol::HTTP2::HandshakeError</code></a></li>
+		<li><a href="ProtocolError/index.html"><code class="language-ruby">Protocol::HTTP2::ProtocolError</code></a></li>
+		<li><a href="StreamError/index.html"><code class="language-ruby">Protocol::HTTP2::StreamError</code></a></li>
+		<li><a href="StreamClosed/index.html"><code class="language-ruby">Protocol::HTTP2::StreamClosed</code></a></li>
+		<li><a href="HeaderError/index.html"><code class="language-ruby">Protocol::HTTP2::HeaderError</code></a></li>
+		<li><a href="GoawayError/index.html"><code class="language-ruby">Protocol::HTTP2::GoawayError</code></a></li>
+		<li><a href="FrameSizeError/index.html"><code class="language-ruby">Protocol::HTTP2::FrameSizeError</code></a></li>
+		<li><a href="FlowControlError/index.html"><code class="language-ruby">Protocol::HTTP2::FlowControlError</code></a></li>
+		<li><a href="FlowControlled/index.html"><code class="language-ruby">Protocol::HTTP2::FlowControlled</code></a></li>
+		<li><a href="Frame/index.html"><code class="language-ruby">Protocol::HTTP2::Frame</code></a></li>
+		<li><a href="Framer/index.html"><code class="language-ruby">Protocol::HTTP2::Framer</code></a></li>
+		<li><a href="GoawayFrame/index.html"><code class="language-ruby">Protocol::HTTP2::GoawayFrame</code></a></li>
+		<li><a href="HeadersFrame/index.html"><code class="language-ruby">Protocol::HTTP2::HeadersFrame</code></a></li>
+		<li><a href="Padded/index.html"><code class="language-ruby">Protocol::HTTP2::Padded</code></a></li>
+		<li><a href="Acknowledgement/index.html"><code class="language-ruby">Protocol::HTTP2::Acknowledgement</code></a></li>
+		<li><a href="PingFrame/index.html"><code class="language-ruby">Protocol::HTTP2::PingFrame</code></a></li>
+		<li><a href="Priority/index.html"><code class="language-ruby">Protocol::HTTP2::Priority</code></a></li>
+		<li><a href="PriorityFrame/index.html"><code class="language-ruby">Protocol::HTTP2::PriorityFrame</code></a></li>
+		<li><a href="PushPromiseFrame/index.html"><code class="language-ruby">Protocol::HTTP2::PushPromiseFrame</code></a></li>
+		<li><a href="ResetStreamFrame/index.html"><code class="language-ruby">Protocol::HTTP2::ResetStreamFrame</code></a></li>
+		<li><a href="Server/index.html"><code class="language-ruby">Protocol::HTTP2::Server</code></a></li>
+		<li><a href="Settings/index.html"><code class="language-ruby">Protocol::HTTP2::Settings</code></a></li>
+		<li><a href="PendingSettings/index.html"><code class="language-ruby">Protocol::HTTP2::PendingSettings</code></a></li>
+		<li><a href="SettingsFrame/index.html"><code class="language-ruby">Protocol::HTTP2::SettingsFrame</code></a></li>
+		<li><a href="Stream/index.html"><code class="language-ruby">Protocol::HTTP2::Stream</code></a></li>
+		<li><a href="Window/index.html"><code class="language-ruby">Protocol::HTTP2::Window</code></a></li>
+		<li><a href="LocalWindow/index.html"><code class="language-ruby">Protocol::HTTP2::LocalWindow</code></a></li>
+		<li><a href="WindowUpdateFrame/index.html"><code class="language-ruby">Protocol::HTTP2::WindowUpdateFrame</code></a></li>
+	</ul>
+	</section>
+	
+	<section>
+	<h2>Definitions</h2>
+	
+	<section id="Protocol::HTTP2::FRAMES"><h3><code class="language-ruby">FRAMES</code></h3><p>HTTP/2 frame type mapping as defined by the spec</p>
+<details>
+						<summary><h4>Implementation</h4></summary>
+						<pre><code class="language-ruby">FRAMES = [
+	DataFrame,
+	HeadersFrame,
+	PriorityFrame,
+	ResetStreamFrame,
+	SettingsFrame,
+	PushPromiseFrame,
+	PingFrame,
+	GoawayFrame,
+	WindowUpdateFrame,
+	ContinuationFrame,
+].freeze</code></pre>
+					</details></section><section id="Protocol::HTTP2::CONNECTION_PREFACE_MAGIC"><h3><code class="language-ruby">CONNECTION_PREFACE_MAGIC = &quot;PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n&quot;.freeze</code></h3><p>Default connection &quot;fast-fail&quot; preamble string as defined by the spec.</p>
+</section>	</section>
+	
+	
+
+				
+			<footer>Documentation generated by <a href="https://github.com/socketry/utopia-project">Utopia::Project</a>.</footer>
+		</main>
+	</body>
+</html>
+

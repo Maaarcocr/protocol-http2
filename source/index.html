@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		
+			<title>Overview</title>
+		
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		
+		<link rel="icon" type="image/png" href="../_static/icon.png"/>
+		<link rel="stylesheet" href="../_static/site.css" type="text/css" media="screen"/>
+		
+		<script src="../_components/jquery/jquery.min.js"></script>
+		<script src="../_components/jquery-syntax/jquery.syntax.min.js"></script>
+		<script src="../_components/mermaid/mermaid.min.js"></script>
+		
+		<script src="../_static/links.js"></script>
+		
+		<script type="text/javascript">
+		//<![CDATA[
+			jQuery(function($) {
+				$.syntax();
+			});
+			
+			let isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+			let config = {theme: 'light'};
+			if (isDarkMode) config.theme = 'dark';
+			else config.theme = 'forest';
+			mermaid.initialize(config);
+		//]]>
+		</script>
+	</head>
+
+	<body>
+		<header> › <a class="link" href="../index.html">Project</a> › <a class="link" href="index.html">Source</a></header>
+		
+		<main>
+			
+	<h1>Overview</h1>
+	
+	<ul class="index"><li>
+						<a href="Protocol/index.html"><code class="language-ruby">module Protocol</code></a>
+						
+						
+						
+					
+					<ul class="index"><li>
+						<a href="Protocol/HTTP2/index.html"><code class="language-ruby">module HTTP2</code></a>
+						
+						
+						
+					
+					<ul class="index"><li>
+						<a href="Protocol/HTTP2/Client/index.html"><code class="language-ruby">class Client &lt; Connection</code></a>
+						
+						
+						
+					
+					<ul class="index"></ul>				</li><li>
+						<a href="Protocol/HTTP2/Connection/index.html"><code class="language-ruby">class Connection</code></a>
+						
+						
+						
+					
+					<ul class="index"><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li></ul>				</li><li>
+						<a href="Protocol/HTTP2/Continued/index.html"><code class="language-ruby">module Continued</code></a>
+						
+						
+						
+					
+					<ul class="index"></ul>				</li><li>
+						<a href="Protocol/HTTP2/ContinuationFrame/index.html"><code class="language-ruby">class ContinuationFrame &lt; Frame</code></a>
+						
+						
+						
+							<p>The CONTINUATION frame is used to continue a sequence of header block fragments. Any number of CONTINUATION frames can be sent, as long as the preceding frame is on the same stream and is a HEADERS, PUSH_PROMISE, or CONTINUATION frame without the END_HEADERS flag set.</p>
+
+					
+					<ul class="index"><li>
+					
+									</li></ul>				</li><li>
+						<a href="Protocol/HTTP2/DataFrame/index.html"><code class="language-ruby">class DataFrame &lt; Frame</code></a>
+						
+						
+						
+							<p>DATA frames convey arbitrary, variable-length sequences of octets associated with a stream. One or more DATA frames are used, for instance, to carry HTTP request or response payloads.</p>
+
+					
+					<ul class="index"></ul>				</li><li>
+						<a href="Protocol/HTTP2/Dependency/index.html"><code class="language-ruby">class Dependency</code></a>
+						
+						
+						
+					
+					<ul class="index"><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li></ul>				</li><li>
+						<a href="Protocol/HTTP2/Error/index.html"><code class="language-ruby">class Error &lt; HTTP::Error</code></a>
+						
+						
+						
+							<p>Status codes as defined by <a href="https://tools.ietf.org/html/rfc7540#section-7">https://tools.ietf.org/html/rfc7540#section-7</a>.</p>
+
+					
+					<ul class="index"><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li></ul>				</li><li>
+						<a href="Protocol/HTTP2/HandshakeError/index.html"><code class="language-ruby">class HandshakeError &lt; Error</code></a>
+						
+						
+						
+							<p>Raised if connection header is missing or invalid indicating that</p>
+
+					
+					<ul class="index"></ul>				</li><li>
+						<a href="Protocol/HTTP2/ProtocolError/index.html"><code class="language-ruby">class ProtocolError &lt; Error</code></a>
+						
+						
+						
+							<p>Raised by stream or connection handlers, results in GOAWAY frame</p>
+
+					
+					<ul class="index"></ul>				</li><li>
+						<a href="Protocol/HTTP2/StreamError/index.html"><code class="language-ruby">class StreamError &lt; ProtocolError</code></a>
+						
+						
+						
+					
+					<ul class="index"></ul>				</li><li>
+						<a href="Protocol/HTTP2/StreamClosed/index.html"><code class="language-ruby">class StreamClosed &lt; StreamError</code></a>
+						
+						
+						
+					
+					<ul class="index"></ul>				</li><li>
+						<a href="Protocol/HTTP2/HeaderError/index.html"><code class="language-ruby">class HeaderError &lt; StreamClosed</code></a>
+						
+						
+						
+					
+					<ul class="index"></ul>				</li><li>
+						<a href="Protocol/HTTP2/GoawayError/index.html"><code class="language-ruby">class GoawayError &lt; ProtocolError</code></a>
+						
+						
+						
+					
+					<ul class="index"></ul>				</li><li>
+						<a href="Protocol/HTTP2/FrameSizeError/index.html"><code class="language-ruby">class FrameSizeError &lt; ProtocolError</code></a>
+						
+						
+						
+							<p>When the frame payload does not match expectations.</p>
+
+					
+					<ul class="index"></ul>				</li><li>
+						<a href="Protocol/HTTP2/FlowControlError/index.html"><code class="language-ruby">class FlowControlError &lt; ProtocolError</code></a>
+						
+						
+						
+							<p>Raised on invalid flow control frame or command.</p>
+
+					
+					<ul class="index"></ul>				</li><li>
+						<a href="Protocol/HTTP2/FlowControlled/index.html"><code class="language-ruby">module FlowControlled</code></a>
+						
+						
+						
+					
+					<ul class="index"><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li></ul>				</li><li>
+						<a href="Protocol/HTTP2/Frame/index.html"><code class="language-ruby">class Frame</code></a>
+						
+						
+						
+					
+					<ul class="index"><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li></ul>				</li><li>
+					
+									</li><li>
+					
+									</li><li>
+						<a href="Protocol/HTTP2/Framer/index.html"><code class="language-ruby">class Framer</code></a>
+						
+						
+						
+					
+					<ul class="index"><li>
+					
+									</li></ul>				</li><li>
+						<a href="Protocol/HTTP2/GoawayFrame/index.html"><code class="language-ruby">class GoawayFrame &lt; Frame</code></a>
+						
+						
+						
+							<p>The GOAWAY frame is used to initiate shutdown of a connection or to signal serious error conditions. GOAWAY allows an endpoint to gracefully stop accepting new streams while still finishing processing of previously established streams. This enables administrative actions, like server maintenance.</p>
+
+					
+					<ul class="index"></ul>				</li><li>
+						<a href="Protocol/HTTP2/HeadersFrame/index.html"><code class="language-ruby">class HeadersFrame &lt; Frame</code></a>
+						
+						
+						
+							<p>The HEADERS frame is used to open a stream, and additionally carries a header block fragment. HEADERS frames can be sent on a stream in the &quot;idle&quot;, &quot;reserved (local)&quot;, &quot;open&quot;, or &quot;half-closed (remote)&quot; state.</p>
+
+					
+					<ul class="index"></ul>				</li><li>
+						<a href="Protocol/HTTP2/Padded/index.html"><code class="language-ruby">module Padded</code></a>
+						
+						
+						
+							<p>Certain frames can have padding:</p>
+
+					
+					<ul class="index"></ul>				</li><li>
+						<a href="Protocol/HTTP2/Acknowledgement/index.html"><code class="language-ruby">module Acknowledgement</code></a>
+						
+						
+						
+					
+					<ul class="index"></ul>				</li><li>
+						<a href="Protocol/HTTP2/PingFrame/index.html"><code class="language-ruby">class PingFrame &lt; Frame</code></a>
+						
+						
+						
+							<p>The PING frame is a mechanism for measuring a minimal round-trip time from the sender, as well as determining whether an idle connection is still functional. PING frames can be sent from any endpoint.</p>
+
+					
+					<ul class="index"></ul>				</li><li>
+						<a href="Protocol/HTTP2/Priority/index.html"><code class="language-ruby">class Priority &lt; Struct.new(:exclusive, :stream_dependency, :weight)</code></a>
+						
+						
+						
+							<p>Stream Dependency:  A 31-bit stream identifier for the stream that</p>
+
+					
+					<ul class="index"><li>
+					
+									</li></ul>				</li><li>
+						<a href="Protocol/HTTP2/PriorityFrame/index.html"><code class="language-ruby">class PriorityFrame &lt; Frame</code></a>
+						
+						
+						
+							<p>The PRIORITY frame specifies the sender-advised priority of a stream. It can be sent in any stream state, including idle or closed streams.</p>
+
+					
+					<ul class="index"></ul>				</li><li>
+						<a href="Protocol/HTTP2/PushPromiseFrame/index.html"><code class="language-ruby">class PushPromiseFrame &lt; Frame</code></a>
+						
+						
+						
+							<p>The PUSH_PROMISE frame is used to notify the peer endpoint in advance of streams the sender intends to initiate. The PUSH_PROMISE frame includes the unsigned 31-bit identifier of the stream the endpoint plans to create along with a set of headers that provide additional context for the stream.</p>
+
+					
+					<ul class="index"></ul>				</li><li>
+						<a href="Protocol/HTTP2/ResetStreamFrame/index.html"><code class="language-ruby">class ResetStreamFrame &lt; Frame</code></a>
+						
+						
+						
+							<p>The RST_STREAM frame allows for immediate termination of a stream. RST_STREAM is sent to request cancellation of a stream or to indicate that an error condition has occurred.</p>
+
+					
+					<ul class="index"></ul>				</li><li>
+						<a href="Protocol/HTTP2/Server/index.html"><code class="language-ruby">class Server &lt; Connection</code></a>
+						
+						
+						
+					
+					<ul class="index"></ul>				</li><li>
+						<a href="Protocol/HTTP2/Settings/index.html"><code class="language-ruby">class Settings</code></a>
+						
+						
+						
+					
+					<ul class="index"><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li></ul>				</li><li>
+						<a href="Protocol/HTTP2/PendingSettings/index.html"><code class="language-ruby">class PendingSettings</code></a>
+						
+						
+						
+					
+					<ul class="index"></ul>				</li><li>
+						<a href="Protocol/HTTP2/SettingsFrame/index.html"><code class="language-ruby">class SettingsFrame &lt; Frame</code></a>
+						
+						
+						
+							<p>The SETTINGS frame conveys configuration parameters that affect how endpoints communicate, such as preferences and constraints on peer behavior. The SETTINGS frame is also used to acknowledge the receipt of those parameters. Individually, a SETTINGS parameter can also be referred to as a &quot;setting&quot;.</p>
+
+					
+					<ul class="index"></ul>				</li><li>
+						<a href="Protocol/HTTP2/Stream/index.html"><code class="language-ruby">class Stream</code></a>
+						
+						
+						
+							<p>A single HTTP 2.0 connection can multiplex multiple streams in parallel:</p>
+
+					
+					<ul class="index"><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li></ul>				</li><li>
+						<a href="Protocol/HTTP2/Window/index.html"><code class="language-ruby">class Window</code></a>
+						
+						
+						
+					
+					<ul class="index"><li>
+					
+									</li><li>
+					
+									</li><li>
+					
+									</li></ul>				</li><li>
+						<a href="Protocol/HTTP2/LocalWindow/index.html"><code class="language-ruby">class LocalWindow &lt; Window</code></a>
+						
+						
+						
+							<p>This is a window which efficiently maintains a desired capacity.</p>
+
+					
+					<ul class="index"></ul>				</li><li>
+						<a href="Protocol/HTTP2/WindowUpdateFrame/index.html"><code class="language-ruby">class WindowUpdateFrame &lt; Frame</code></a>
+						
+						
+						
+							<p>The WINDOW_UPDATE frame is used to implement flow control.</p>
+
+					
+					<ul class="index"></ul>				</li></ul>				</li></ul>				</li></ul>
+				
+			<footer>Documentation generated by <a href="https://github.com/socketry/utopia-project">Utopia::Project</a>.</footer>
+		</main>
+	</body>
+</html>

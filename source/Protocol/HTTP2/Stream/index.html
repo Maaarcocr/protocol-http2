@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		
+			<title>Protocol::HTTP2::Stream</title>
+		
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		
+		<link rel="icon" type="image/png" href="../../../../_static/icon.png"/>
+		<link rel="stylesheet" href="../../../../_static/site.css" type="text/css" media="screen"/>
+		
+		<script src="../../../../_components/jquery/jquery.min.js"></script>
+		<script src="../../../../_components/jquery-syntax/jquery.syntax.min.js"></script>
+		<script src="../../../../_components/mermaid/mermaid.min.js"></script>
+		
+		<script src="../../../../_static/links.js"></script>
+		
+		<script type="text/javascript">
+		//<![CDATA[
+			jQuery(function($) {
+				$.syntax();
+			});
+			
+			let isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+			let config = {theme: 'light'};
+			if (isDarkMode) config.theme = 'dark';
+			else config.theme = 'forest';
+			mermaid.initialize(config);
+		//]]>
+		</script>
+	</head>
+
+	<body>
+		<header> › <a class="link" href="../../../../index.html">Project</a> › <a class="link" href="../../../index.html">Source</a></header>
+		
+		<main>
+			
+	<h1><code class="language-ruby">Protocol::HTTP2::Stream</code></h1>
+	
+	<p>A single HTTP 2.0 connection can multiplex multiple streams in parallel:
+multiple requests and responses can be in flight simultaneously and stream
+data can be interleaved and prioritized.</p>
+<p>This class encapsulates all of the state, transition, flow-control, and
+error management as defined by the HTTP 2.0 specification. All you have
+to do is subscribe to appropriate events (marked with &quot;:&quot; prefix in
+diagram below) and provide your application logic to handle request
+and response processing.</p>
+<p>+--------+
+send PP |        | recv PP
+,--------|  idle  |--------.
+/         |        |         <br/>
+v          +--------+          v
++----------+          |           +----------+
+|          |          | send H /  |          |
+,------| reserved |          | recv H    | reserved |------.
+|      | (local)  |          |           | (remote) |      |
+|      +----------+          v           +----------+      |
+|          |             +--------+             |          |
+|          |     recv ES |        | send ES     |          |
+|   send H |     ,-------|  open  |-------.     | recv H   |
+|          |    /        |        |        \    |          |
+|          v   v         +--------+         v   v          |
+|      +----------+          |           +----------+      |
+|      |   half   |          |           |   half   |      |
+|      |  closed  |          | send R /  |  closed  |      |
+|      | (remote) |          | recv R    | (local)  |      |
+|      +----------+          |           +----------+      |
+|           |                |                 |           |
+|           | send ES /      |       recv ES / |           |
+|           | send R /       v        send R / |           |
+|           | recv R     +--------+   recv R   |           |
+| send R /  <code>-----------&gt;|        |&lt;-----------'  send R / | | recv R                 | closed |               recv R   | </code>-----------------------&gt;|        |&lt;----------------------'
++--------+</p>
+<p>send:   endpoint sends this frame
+recv:   endpoint receives this frame</p>
+<p>H:  HEADERS frame (with implied CONTINUATIONs)
+PP: PUSH_PROMISE frame (with implied CONTINUATIONs)
+ES: END_STREAM flag
+R:  RST_STREAM frame</p>
+<p>State transition methods use a trailing &quot;!&quot;.</p>
+	
+	
+	
+	
+	<section>
+	<h2>Definitions</h2>
+	
+	<section id="Protocol::HTTP2::Stream#connection"><h3><code class="language-ruby">attr :connection</code></h3><p>The connection this stream belongs to.</p>
+</section><section id="Protocol::HTTP2::Stream#id"><h3><code class="language-ruby">attr :id</code></h3><p>Stream ID (odd for client initiated streams, even otherwise).</p>
+</section><section id="Protocol::HTTP2::Stream#state"><h3><code class="language-ruby">attr_accessor :state</code></h3><p>Stream state, e.g. <code>idle</code>, <code>closed</code>.</p>
+</section><section id="Protocol::HTTP2::Stream#close"><h3><code class="language-ruby">def close(error = nil)</code></h3><p>Transition directly to closed state. Do not pass go, do not collect $200.
+This method should only be used by <code>Connection#close</code>.</p>
+<details>
+						<summary><h4>Implementation</h4></summary>
+						<pre><code class="language-ruby">def close(error = nil)
+	unless closed?
+		@state = :closed
+		self.closed(error)
+	end
+end</code></pre>
+					</details></section><section id="Protocol::HTTP2::Stream#send_headers"><h3><code class="language-ruby">def send_headers(*arguments)</code></h3><p>The HEADERS frame is used to open a stream, and additionally carries a header block fragment. HEADERS frames can be sent on a stream in the &quot;idle&quot;, &quot;reserved (local)&quot;, &quot;open&quot;, or &quot;half-closed (remote)&quot; state.</p>
+<details>
+						<summary><h4>Implementation</h4></summary>
+						<pre><code class="language-ruby">def send_headers(*arguments)
+	if @state == :idle
+		frame = write_headers(*arguments)
+		
+		if frame.end_stream?
+			@state = :half_closed_local
+		else
+			open!
+		end
+	elsif @state == :reserved_local
+		frame = write_headers(*arguments)
+		
+		@state = :half_closed_remote
+	elsif @state == :open
+		frame = write_headers(*arguments)
+		
+		if frame.end_stream?
+			@state = :half_closed_local
+		end
+	elsif @state == :half_closed_remote
+		frame = write_headers(*arguments)
+		
+		if frame.end_stream?
+			close!
+		end
+	else
+		raise ProtocolError, &quot;Cannot send headers in state: #{@state}&quot;
+	end
+end</code></pre>
+					</details></section><section id="Protocol::HTTP2::Stream#opened"><h3><code class="language-ruby">def opened(error = nil)</code></h3><p>The stream has been opened.</p>
+<details>
+						<summary><h4>Implementation</h4></summary>
+						<pre><code class="language-ruby">def opened(error = nil)
+end</code></pre>
+					</details></section><section id="Protocol::HTTP2::Stream#closed"><h3><code class="language-ruby">def closed(error = nil)</code></h3><p>The stream has been closed. If closed due to a stream reset, the error will be set.</p>
+<details>
+						<summary><h4>Implementation</h4></summary>
+						<pre><code class="language-ruby">def closed(error = nil)
+end</code></pre>
+					</details></section><section id="Protocol::HTTP2::Stream#close!"><h3><code class="language-ruby">def close!(error_code = nil)</code></h3><p>Transition the stream into the closed state.</p>
+<details>
+						<summary><h4>Implementation</h4></summary>
+						<pre><code class="language-ruby">def close!(error_code = nil)
+	@state = :closed
+	@connection.delete(@id)
+	
+	if error_code
+		error = StreamError.new(&quot;Stream closed!&quot;, error_code)
+	end
+	
+	self.closed(error)
+	
+	return self
+end</code></pre>
+					</details></section><section id="Protocol::HTTP2::Stream#process_data"><h3><code class="language-ruby">def process_data(frame)</code></h3><details>
+						<summary><h4>Implementation</h4></summary>
+						<pre><code class="language-ruby">def process_data(frame)
+	frame.unpack
+end</code></pre>
+					</details></section><section id="Protocol::HTTP2::Stream#receive_data"><h3><code class="language-ruby">def receive_data(frame)</code></h3><p>DATA frames are subject to flow control and can only be sent when a stream is in the &quot;open&quot; or &quot;half-closed (remote)&quot; state.  The entire DATA frame payload is included in flow control, including the Pad Length and Padding fields if present.  If a DATA frame is received whose stream is not in &quot;open&quot; or &quot;half-closed (local)&quot; state, the recipient MUST respond with a stream error of type STREAM_CLOSED.</p>
+<details>
+						<summary><h4>Implementation</h4></summary>
+						<pre><code class="language-ruby">def receive_data(frame)
+	if @state == :open
+		update_local_window(frame)
+		
+		if frame.end_stream?
+			@state = :half_closed_remote
+		end
+		
+		process_data(frame)
+	elsif @state == :half_closed_local
+		update_local_window(frame)
+		
+		process_data(frame)
+		
+		if frame.end_stream?
+			close!
+		end
+	elsif self.closed?
+		ignore_data(frame)
+	else
+		# If a DATA frame is received whose stream is not in &quot;open&quot; or &quot;half-closed (local)&quot; state, the recipient MUST respond with a stream error (Section 5.4.2) of type STREAM_CLOSED.
+		self.send_reset_stream(Error::STREAM_CLOSED)
+	end
+end</code></pre>
+					</details></section><section id="Protocol::HTTP2::Stream#create_push_promise_stream"><h3><code class="language-ruby">def create_push_promise_stream(headers)</code></h3><p>Override this function to implement your own push promise logic.</p>
+<details>
+						<summary><h4>Implementation</h4></summary>
+						<pre><code class="language-ruby">def create_push_promise_stream(headers)
+	@connection.create_push_promise_stream
+end</code></pre>
+					</details></section><section id="Protocol::HTTP2::Stream#send_push_promise"><h3><code class="language-ruby">def send_push_promise(headers)</code></h3><p>Server push is semantically equivalent to a server responding to a request; however, in this case, that request is also sent by the server, as a PUSH_PROMISE frame.</p>
+<details>
+						<summary><h4>Implementation</h4></summary>
+						<pre><code class="language-ruby">def send_push_promise(headers)
+	if @state == :open or @state == :half_closed_remote
+		promised_stream = self.create_push_promise_stream(headers)
+		promised_stream.reserved_local!
+		
+		write_push_promise(promised_stream.id, headers)
+		
+		return promised_stream
+	else
+		raise ProtocolError, &quot;Cannot send push promise in state: #{@state}&quot;
+	end
+end</code></pre>
+					</details></section><section id="Protocol::HTTP2::Stream#accept_push_promise_stream"><h3><code class="language-ruby">def accept_push_promise_stream(stream_id, headers)</code></h3><p>Override this function to implement your own push promise logic.</p>
+<details>
+						<summary><h4>Implementation</h4></summary>
+						<pre><code class="language-ruby">def accept_push_promise_stream(stream_id, headers)
+	@connection.accept_push_promise_stream(stream_id)
+end</code></pre>
+					</details></section>	</section>
+	
+	
+
+				
+			<footer>Documentation generated by <a href="https://github.com/socketry/utopia-project">Utopia::Project</a>.</footer>
+		</main>
+	</body>
+</html>
+
